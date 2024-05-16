@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ALZWECARE Bracelet</title>
+    <style>
+        body {
+            background-color: #0fcbe0;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            padding: 0rem;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #0ec2d6;
+        }
+
+        header .logo {
+            height: 4rem;
+            margin-left: 1rem;
+        }
+
+        main {
+            display: flex;
+            justify-content: space-between;
+            padding: 2rem;
+        }
+
+        .left-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .left-column h2 {
+            color: #fff;
+            margin-bottom: 1rem;
+            font-size: 3rem;
+        }
+
+        .left-column p {
+            color: #fff;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+        }
+
+        .text-container {
+            margin-bottom: 1rem;
+        }
+
+        .text {
+            color: #0fcbe0;
+            font-size: 1.5rem;
+            text-align: start;
+            margin-bottom: 1rem;
+        }
+
+        .left-column form {
+            display: flex;
+            flex-direction: row;
+            justify-content: start; /* Centrer horizontalement */
+            align-items: center; 
+        }
+
+        .card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+            width: 65%;
+            text-align: start;
+        }
+
+        .input-field,
+        .login-button {
+            display: inline-block; /* Afficher en ligne */
+            width: auto; /* Réinitialiser la largeur */
+            background-color: #0fcbe0;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .input-field {
+            margin-right: 15px; /* Marge à droite */
+            width: calc(100% - 100px); /* largeur du card moins la largeur du champ de texte */
+        }
+
+        .input-field:focus {
+            border-color: white; /* Couleur du contour lorsqu'il est en focus */
+        }
+
+        .login-button {
+            width: calc(100% - 100px); /* largeur du card moins la largeur du champ de texte */
+        }
+
+        .right-column {
+            flex: 1;
+        }
+
+        .right-column img {
+            width: 100%; /* Largeur de l'image */
+            height: 100vh; /* Hauteur de l'image */
+            object-fit: cover; /* Ajuster l'image pour couvrir toute la div */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="logofini.png" alt="ALZWECARE" class="logo">
+        <h1>ALZWECARE</h1>
+    </header>
+    <main>
+        <div class="left-column">
+            <h2>Bracelet Connected, Life Connected<br><p>Easy help in one step</p></h2>
+            <div class="card">
+                <div class="text-container">
+                    <div class="text">Please Enter the ID</div>
+                </div>
+                <form>
+                    <input type="text" id="identifier" name="identifier" class="input-field" pattern="[A-Za-z0-9]{8}" title="Please enter 8 alphanumeric characters">
+                    <button type="button" id="login-button" class="login-button" onclick="validateAndRedirect()">Click Here</button>
+                </form>
+            </div>
+        </div>
+        <div class="right-column">
+            <img src="imgweb.png" alt="Image">
+        </div>
+    </main>
+
+    <!-- Intégration de Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Initialisez Firebase avec votre configuration
+        var firebaseConfig = {
+            apiKey: 'AIzaSyDWyDf8RonkQD4i2Q__BZ0zz3bGzBIKuoo',
+            authDomain: 'authentification-7a237.firebaseapp.com',
+            projectId: 'authentification-7a237',
+            storageBucket: 'authentification-7a237.appspot.com',
+            messagingSenderId: '113116135779',
+            appId: '1:113116135779:web:8e0caed83e9a897b8ad356',
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // Obtenez une référence à la collection "patients"
+        var patientsCollection = firebase.firestore().collection("patient");
+
+        // Fonction pour vérifier si l'ID existe dans la collection Firestore
+        function checkIdExists(id) {
+            return patientsCollection.doc(id).get()
+                .then(doc => {
+                    if (doc.exists) {
+                        // L'ID existe dans la collection, redirigez vers la page de données patient
+                        redirectToPage();
+                    } else {
+                        // L'ID n'existe pas dans la collection, affichez un message d'erreur
+                        alert("ID does not exist.");
+                    }
+                })
+                .catch(error => {
+                    console.log("Error getting document:", error);
+                });
+        }
+
+        // Fonction pour rediriger vers la page de données patient
+        function redirectToPage() {
+            // Remplacez 'datapatient.html' par l'URL de la nouvelle page
+            window.location.href = 'datapatient.html';
+        }
+
+        // Fonction pour valider l'ID et effectuer la redirection si l'ID est valide
+        function validateAndRedirect() {
+            var input = document.getElementById("identifier").value;
+            if (input.length !== 8 || !/^[A-Za-z0-9]+$/.test(input)) {
+                alert("Please enter 8 alphanumeric characters.");
+            } else {
+                checkIdExists(input);
+            }
+        }
+    </script>
+</body>
+</html>
