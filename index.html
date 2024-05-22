@@ -177,8 +177,8 @@
 
         // Fonction pour rediriger vers la page de données patient
         function redirectToPage() {
-            // Remplacez 'datapatient.html' par l'URL de la nouvelle page
-            window.location.href = 'datapatient.html';
+            var input = document.getElementById("identifier").value;
+            window.location.href = 'datapatient.html?id=' + input;
         }
 
         // Fonction pour valider l'ID et effectuer la redirection si l'ID est valide
@@ -187,7 +187,7 @@
             if (input.length !== 8 || !/^[A-Za-z0-9]+$/.test(input)) {
                 alert("Please enter 8 alphanumeric characters.");
             } else {
-                window.location.href = 'datapatient.html?id=' + input;
+                checkIdExists(input);
             }
         }
     </script>
