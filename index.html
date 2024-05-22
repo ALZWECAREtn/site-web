@@ -187,7 +187,7 @@
             if (input.length !== 8 || !/^[A-Za-z0-9]+$/.test(input)) {
                 alert("Please enter 8 alphanumeric characters.");
             } else {
-                checkIdExists(input);
+                window.location.href = 'datapatient.html?id=' + input;
             }
         }
     </script>
